@@ -3,7 +3,7 @@
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon?limit=10";
 const mainPokemonContent = document.querySelector(".main_content");
 const imageContainer = document.querySelector(".image_container");
-let colorArray = [];
+let pokemonArray = [];
 
 function init() {
   pokemonData();
@@ -39,6 +39,20 @@ function writeHTML(id, name, img, abilities) {
             </div>`;
 }
 
+function writeHTMLForTheBox() {
+  return `
+          <div class="title_arangement">
+            <div class="box_id">iddsadasd</div>
+            <div class="box_name">name</div>
+          </div>
+          <div>
+            <span>imgage</span>
+          </div>
+          <div>menu</div>
+          <div>content</div>
+          </div>`;
+}
+
 async function getPokemnonAPI() {
   const response = await fetch(BASE_URL);
   try {
@@ -46,6 +60,8 @@ async function getPokemnonAPI() {
       throw new console.error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
+    console.log(data);
+
     return data.results;
   } catch (error) {
     console.error("Error fetching Pokémon:", error);
@@ -74,8 +90,7 @@ async function pokemonData() {
 async function pokemonSpeciesData(response) {
   const fetchSpeciesData = await fetch(response);
   const species = await fetchSpeciesData.json();
-  console.log(species.id);
-
+  console.log(species);
   let color = (document.getElementById(species.id).style.backgroundColor = species.color.name);
 }
 
