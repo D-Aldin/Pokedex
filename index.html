@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="de-DE">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./scripts/script.js" defer></script>
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="icon" href="./assets/icons/pokeball.png" type="image/x-icon" />
+    <title>Pokemon</title>
+  </head>
+  <body onload="init()">
+    <header>
+      <img src="./assets/icons/pokeball.png" alt="" />
+      <h1>Pokedex</h1>
+    </header>
+
+    <main class="main_content">
+      <div id="overlay" onclick="overlayOff()">
+        <div class="dialog_box" onclick="stopEventBubbel(event)">
+            <div></div>
+        </div>
+      </div>
+    </main>
+
+    <footer></footer>
+  </body>
+</html>
