@@ -3,6 +3,7 @@
 const BASE_URL = "https://pokeapi.co/api/v2/pokemon?limit=10";
 const mainPokemonContent = document.querySelector(".main_content");
 const imageContainer = document.querySelector(".image_container");
+const dialogBox = document.querySelector(".dialog_box");
 let pokemonArray = [];
 
 function init() {
@@ -22,7 +23,8 @@ function stopEventBubbel(event) {
 }
 
 function writeHTML(id, name, img, abilities) {
-  return `   
+  return `  
+          <div onclick="pokemonDialogBox(event)"> 
             <div id="${id}" class="pokemon_box" onclick="overlayOn()">
                 <article class="content_arrangement">
                     <div class="pokemon_title">
@@ -36,17 +38,18 @@ function writeHTML(id, name, img, abilities) {
                       <div class="pokemon_abilities">${abilities}</div>
                     </div>  
                 </article>
-            </div>`;
+            </div>
+          </div>  `;
 }
 
-function writeHTMLForTheBox() {
+function writeHTMLForTheBox(id, name) {
   return `
           <div class="title_arangement">
-            <div class="box_id">iddsadasd</div>
-            <div class="box_name">name</div>
+            <div class="box_id">${id}</div>
+            <div class="box_name">${name}</div>
           </div>
           <div>
-            <span>imgage</span>
+            <span></span>
           </div>
           <div>menu</div>
           <div>content</div>
@@ -60,8 +63,6 @@ async function getPokemnonAPI() {
       throw new console.error(`HTTP error! Status: ${response.status}`);
     }
     const data = await response.json();
-    console.log(data);
-
     return data.results;
   } catch (error) {
     console.error("Error fetching Pokémon:", error);
@@ -90,8 +91,8 @@ async function pokemonData() {
 async function pokemonSpeciesData(response) {
   const fetchSpeciesData = await fetch(response);
   const species = await fetchSpeciesData.json();
-  console.log(species);
-  let color = (document.getElementById(species.id).style.backgroundColor = species.color.name);
+  pokemonArray.push(species);
+  document.getElementById(species.id).style.backgroundColor = species.color.name;
 }
 
 async function pokemonDetailsData(dataOnDetails) {
@@ -100,4 +101,15 @@ async function pokemonDetailsData(dataOnDetails) {
   const image = dataOnDetails.sprites.other.home.front_default;
   const abilities = dataOnDetails.types.map((element) => element.type.name);
   mainPokemonContent.innerHTML += writeHTML(id, name, image, abilities.join(" "));
+}
+
+async function pokemonDialogBox(event) {
+  const pokemonID = event.target.closest(".pokemon_box").id;
+  const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonID}`);
+  const pokemonDetailsData = await response.json();
+  let id = pokemonDetailsData.id;
+  let name = pokemonDetailsData.name;
+
+  dialogBox.innerHTML = writeHTMLForTheBox(id, name);
+  console.log(pokemonDetailsData);
 }
