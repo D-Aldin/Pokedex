@@ -4,7 +4,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   width: 320px;
-  height: 420px;
+  height: 600px;
   background-color: #ffffff;
   color: rgb(0, 0, 0);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
@@ -30,4 +30,32 @@
 }
 
 .box_name {
+}
+
+.box_image {
+}
+
+.box_image img {
+  width: 100%;
+}
+
+.box_menu {
+  width: 100%;
+  background-color: #c9c9c9;
+  display: flex;
+  justify-content: space-around;
+}
+
+.box_menu_text {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.box_content {
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-spacing: 10px;
 }

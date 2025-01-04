@@ -108,5 +108,24 @@ header img {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.685);
   z-index: 1;
-  cursor: pointer;
+  /* cursor: pointer; */
+}
+
+progress {
+  accent-color: #7c1a2b;
+}
+
+.progress_content {
+  margin-top: 15px;
+}
+
+#hp,
+#attack,
+#defense,
+#specialAttack,
+#specialDefense,
+#speed {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
 }

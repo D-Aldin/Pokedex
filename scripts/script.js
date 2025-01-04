@@ -22,40 +22,6 @@ function stopEventBubbel(event) {
   event.stopPropagation();
 }
 
-function writeHTML(id, name, img, abilities) {
-  return `  
-          <div onclick="pokemonDialogBox(event)"> 
-            <div id="${id}" class="pokemon_box" onclick="overlayOn()">
-                <article class="content_arrangement">
-                    <div class="pokemon_title">
-                        <div class="pokemon_id">#${id}</div>
-                        <div class="pokemon_name">${name}</div>
-                    </div>
-                    <div class="image_container">
-                      <img src="${img}" alt="" />
-                    </div>
-                    <div class="abilities_arangement">  
-                      <div class="pokemon_abilities">${abilities}</div>
-                    </div>  
-                </article>
-            </div>
-          </div>  `;
-}
-
-function writeHTMLForTheBox(id, name) {
-  return `
-          <div class="title_arangement">
-            <div class="box_id">${id}</div>
-            <div class="box_name">${name}</div>
-          </div>
-          <div>
-            <span></span>
-          </div>
-          <div>menu</div>
-          <div>content</div>
-          </div>`;
-}
-
 async function getPokemnonAPI() {
   const response = await fetch(BASE_URL);
   try {
@@ -91,8 +57,7 @@ async function pokemonData() {
 async function pokemonSpeciesData(response) {
   const fetchSpeciesData = await fetch(response);
   const species = await fetchSpeciesData.json();
-  pokemonArray.push(species);
-  document.getElementById(species.id).style.backgroundColor = species.color.name;
+  document.getElementById(species.id).style.backgroundImage = generateRandomGradient(species.color.name);
 }
 
 async function pokemonDetailsData(dataOnDetails) {
@@ -107,9 +72,35 @@ async function pokemonDialogBox(event) {
   const pokemonID = event.target.closest(".pokemon_box").id;
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonID}`);
   const pokemonDetailsData = await response.json();
-  let id = pokemonDetailsData.id;
-  let name = pokemonDetailsData.name;
+  const id = pokemonDetailsData.id;
+  const name = pokemonDetailsData.name;
+  const image = pokemonDetailsData.sprites.other.home.front_default;
+  dialogBox.innerHTML = writeHTMLForTheBox(id, name, image);
+  colorForTheBox(pokemonID);
+  displayMainContent(pokemonDetailsData);
+  document.getElementById("stats").addEventListener("click", StatsContent.bind(null, pokemonDetailsData));
+  document.getElementById("main").addEventListener("click", displayMainContent.bind(null, pokemonDetailsData));
+}
 
-  dialogBox.innerHTML = writeHTMLForTheBox(id, name);
-  console.log(pokemonDetailsData);
+function displayMainContent(data) {
+  const ability = data.abilities.map((item) => item.ability.name);
+  const dialogBoxMainContent = document.querySelector(".box_content");
+  dialogBoxMainContent.innerHTML = HTMLMenuContent(data.height, data.weight, data.base_experience, ability);
+}
+
+function StatsContent(data) {
+  const stats = data.stats.map((item) => item.stat.name);
+  const dialogBoxMainContent = document.querySelector(".box_content");
+  dialogBoxMainContent.innerHTML = HTMLStatsContent(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5]);
+  const nodeList = document.querySelectorAll("progress");
+  for (let index = 0; index < nodeList.length; index++) {
+    nodeList[index].value = data.stats[index].base_stat;
+  }
+}
+
+function evoChain(data) {}
+
+function colorForTheBox(id) {
+  let color = document.getElementById(id).style.backgroundImage;
+  document.querySelector(".box_image").style.backgroundImage = color;
 }
