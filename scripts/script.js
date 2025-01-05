@@ -4,7 +4,7 @@ const BASE_URL = "https://pokeapi.co/api/v2/pokemon?limit=10";
 const mainPokemonContent = document.querySelector(".main_content");
 const imageContainer = document.querySelector(".image_container");
 const dialogBox = document.querySelector(".dialog_box");
-let pokemonArray = [];
+let pokemonImage = [];
 
 function init() {
   pokemonData();
@@ -66,6 +66,7 @@ async function pokemonDetailsData(dataOnDetails) {
   const image = dataOnDetails.sprites.other.home.front_default;
   const abilities = dataOnDetails.types.map((element) => element.type.name);
   mainPokemonContent.innerHTML += writeHTML(id, name, image, abilities.join(" "));
+  pokemonImage.push(image);
 }
 
 async function pokemonDialogBox(event) {
@@ -80,6 +81,7 @@ async function pokemonDialogBox(event) {
   displayMainContent(pokemonDetailsData);
   document.getElementById("stats").addEventListener("click", StatsContent.bind(null, pokemonDetailsData));
   document.getElementById("main").addEventListener("click", displayMainContent.bind(null, pokemonDetailsData));
+  document.getElementById("evo").addEventListener("click", evoChain.bind(null, pokemonID));
 }
 
 function displayMainContent(data) {
@@ -98,7 +100,22 @@ function StatsContent(data) {
   }
 }
 
-function evoChain(data) {}
+async function evoChain(id) {
+  const fetchSpeciesData = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
+  const species = await fetchSpeciesData.json();
+
+  const fetchEvoChainData = await fetch(species.evolution_chain.url);
+  const evoChain = await fetchEvoChainData.json();
+
+  console.log(evoChain.chain.evolves_to[0].species);
+  const dani = evoChain.chain.evolves_to[0].species.url;
+
+  const pokemonToEvolves = await fetch(dani);
+  const ajla = await pokemonToEvolves.json();
+  // console.log(dani);
+  // console.log(ajla);
+  console.log(pokemonImage);
+}
 
 function colorForTheBox(id) {
   let color = document.getElementById(id).style.backgroundImage;

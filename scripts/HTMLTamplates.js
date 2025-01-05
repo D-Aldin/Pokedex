@@ -30,7 +30,7 @@ function writeHTMLForTheBox(id, name, img) {
             <div class="box_menu">
               <button id="main" onclick="">main</button>
               <button id="stats">stats</button>
-              <button>evo chain</button>
+              <button id="evo">evo chain</button>
             </div>  
             <div class="box_content"></div>
             `;
