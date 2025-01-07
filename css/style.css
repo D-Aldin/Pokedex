@@ -44,10 +44,12 @@ header img {
   display: flex;
   justify-content: center;
   font-weight: bold;
-  background-color: #c9c9c9;
+  background-color: #c9c9c959;
   border-radius: 10px 10px 0px 0px;
   width: 100%;
   gap: 30px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 
 .content_arrangement {
@@ -62,6 +64,10 @@ header img {
   cursor: pointer;
   box-shadow: 2px 2px 8px #838282;
   border-radius: 10px;
+}
+
+.pokemon_box:hover {
+  transform: scale(1.1);
 }
 
 .pokemon_box img {
@@ -87,7 +93,7 @@ header img {
 }
 
 .abilities_arangement {
-  background-color: #c9c9c9;
+  background-color: #c9c9c959;
   width: 100%;
   display: flex;
   align-items: center;
@@ -97,6 +103,7 @@ header img {
 .pokemon_abilities {
   word-spacing: 50px;
   margin: 4px;
+  font-weight: bold;
 }
 
 #overlay {
@@ -117,6 +124,10 @@ progress {
 
 .progress_content {
   margin-top: 100px;
+}
+
+.progress_content span {
+  font-weight: bold;
 }
 
 #hp,

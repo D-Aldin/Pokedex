@@ -62,15 +62,19 @@
   border-radius: 10px 10px 0 0;
 }
 
-.box_menu button {
+.btn {
   cursor: pointer;
   border: none;
   color: white;
-  background-color: #c9c9c9;
+  background-color: rgba(172, 172, 172, 0.37);
   border: rgb(201, 201, 201) transparent;
   padding: 12px;
   border-radius: 30px;
   filter: drop-shadow(6px 4px 4px rgb(128, 123, 123));
+}
+
+.btn:hover {
+  transform: scale(1.1);
 }
 
 .box_menu_text {
@@ -112,4 +116,6 @@ table {
 .evolution_image {
   width: 4.5rem;
   height: 4.5rem;
+  margin-left: 3px;
+  margin-right: 3px;
 }
