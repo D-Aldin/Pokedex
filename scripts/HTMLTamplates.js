@@ -5,7 +5,7 @@ function writeHTML(id, name, img, abilities) {
                   <article class="content_arrangement">
                       <div class="pokemon_title">
                           <div class="pokemon_id">#${id}</div>
-                          <div class="pokemon_name">${name}</div>
+                          <div id=${name} class="pokemon_name">${name}</div>
                       </div>
                       <div class="image_container">
                         <img src="${img}" alt="" />
@@ -25,34 +25,35 @@ function writeHTMLForTheBox(id, name, img) {
               <div class="box_name">${name}</div>
             </div>
             <div class="box_image">
+              <h2>${name}</h2>
               <img src="${img}" alt="">
             </div>
+            <div class="box_content"></div>
             <div class="box_menu">
               <button id="main" onclick="">main</button>
               <button id="stats">stats</button>
               <button id="evo">evo chain</button>
-            </div>  
-            <div class="box_content"></div>
+            </div>
             `;
 }
 
-function HTMLMenuContent(height, wight, experience, ability) {
+function attributeOverviewHTML(height, wight, experience, ability) {
   return `
-          <table>
+          <table>  
             <tr>
-              <td>Height:</td>
+              <th>Height:</th>
               <td>${height}</td>
             </tr>
             <tr>
-              <td>Wight:</td>
+              <th>Wight:</th>
               <td>${wight}</td>
             </tr>
             <tr>
-              <td>Base experience:</td>
+              <th>Base experience:</th>
               <td>${experience}</td>
             </tr>
             <tr>
-              <td>Abilities:</td>
+              <th>Abilities:</th>
               <td>${ability}</td>
            </tr>
           </table>`;
@@ -87,4 +88,15 @@ function HTMLStatsContent(hp, attack, defense, specialAttack, specialDefense, sp
       </div>
     </div>
   `;
+}
+
+function HTMLEvoChain(first, secound, three) {
+  return `
+        <div class="evolution_content">
+          <img class="evolution_image" src="${first}" alt="" />
+          <img class="arrow" src="./assets/icons/fast-forward.png" alt="" />
+          <img class="evolution_image" src="${secound}" alt="" />
+          <img class="arrow" src="./assets/icons/fast-forward.png" alt="" />
+          <img class="evolution_image" src="${three}" alt="" />
+        </div>`;
 }

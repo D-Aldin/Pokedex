@@ -4,7 +4,7 @@ const BASE_URL = "https://pokeapi.co/api/v2/pokemon?limit=10";
 const mainPokemonContent = document.querySelector(".main_content");
 const imageContainer = document.querySelector(".image_container");
 const dialogBox = document.querySelector(".dialog_box");
-let pokemonImage = [];
+let pokemonList = [];
 
 function init() {
   pokemonData();
@@ -22,28 +22,28 @@ function stopEventBubbel(event) {
   event.stopPropagation();
 }
 
-async function getPokemnonAPI() {
+async function fetchBaseUrl() {
   const response = await fetch(BASE_URL);
   try {
     if (!response.ok) {
-      throw new console.error(`HTTP error! Status: ${response.status}`);
+      throw new console.error(`Error! Status: ${response.status}`);
     }
     const data = await response.json();
     return data.results;
   } catch (error) {
-    console.error("Error fetching Pokémon:", error);
+    console.error("Error fetching Pokemon:", error);
     return null;
   }
 }
 
 async function pokemonData() {
-  const pokemonData = await getPokemnonAPI();
+  const pokemonData = await fetchBaseUrl();
   for (let index = 0; index < pokemonData.length; index++) {
     const pokemon = pokemonData[index];
     try {
       const response = await fetch(pokemon.url);
       if (!response.ok) {
-        throw new console.error(`HTTP error! Status: ${response.status}`);
+        throw new console.error(`Error! Status: ${response.status}`);
       }
       const pokemonDetails = await response.json();
       pokemonDetailsData(pokemonDetails);
@@ -54,10 +54,14 @@ async function pokemonData() {
   }
 }
 
-async function pokemonSpeciesData(response) {
-  const fetchSpeciesData = await fetch(response);
-  const species = await fetchSpeciesData.json();
+async function pokemonSpeciesData(url) {
+  const speciesResponse = await fetch(url);
+  const species = await speciesResponse.json();
   document.getElementById(species.id).style.backgroundImage = generateRandomGradient(species.color.name);
+  const evolutionResponse = await fetch(species.evolution_chain.url);
+  const evoData = await evolutionResponse.json();
+  const evoDataContent = pokemonList.find((obj) => obj.id === species.id);
+  evoDataContent.evo = evoData;
 }
 
 async function pokemonDetailsData(dataOnDetails) {
@@ -65,8 +69,15 @@ async function pokemonDetailsData(dataOnDetails) {
   const name = dataOnDetails.name;
   const image = dataOnDetails.sprites.other.home.front_default;
   const abilities = dataOnDetails.types.map((element) => element.type.name);
+  console.log(abilities);
+
   mainPokemonContent.innerHTML += writeHTML(id, name, image, abilities.join(" "));
-  pokemonImage.push(image);
+  const pokemonObject = {
+    id: dataOnDetails.id,
+    name: dataOnDetails.name,
+    image: image,
+  };
+  pokemonList.push(pokemonObject);
 }
 
 async function pokemonDialogBox(event) {
@@ -77,20 +88,22 @@ async function pokemonDialogBox(event) {
   const name = pokemonDetailsData.name;
   const image = pokemonDetailsData.sprites.other.home.front_default;
   dialogBox.innerHTML = writeHTMLForTheBox(id, name, image);
-  colorForTheBox(pokemonID);
-  displayMainContent(pokemonDetailsData);
-  document.getElementById("stats").addEventListener("click", StatsContent.bind(null, pokemonDetailsData));
-  document.getElementById("main").addEventListener("click", displayMainContent.bind(null, pokemonDetailsData));
-  document.getElementById("evo").addEventListener("click", evoChain.bind(null, pokemonID));
+  applyForTheBox(pokemonID);
+  displayAttributeOverview(pokemonDetailsData);
+  document.getElementById("stats").addEventListener("click", displayStatsContent.bind(null, pokemonDetailsData));
+  document.getElementById("main").addEventListener("click", displayAttributeOverview.bind(null, pokemonDetailsData));
+  document.getElementById("evo").addEventListener("click", displayEvolutionChain.bind(null, pokemonID));
 }
 
-function displayMainContent(data) {
+function displayAttributeOverview(data) {
   const ability = data.abilities.map((item) => item.ability.name);
+  console.log(data);
+
   const dialogBoxMainContent = document.querySelector(".box_content");
-  dialogBoxMainContent.innerHTML = HTMLMenuContent(data.height, data.weight, data.base_experience, ability);
+  dialogBoxMainContent.innerHTML = attributeOverviewHTML(data.height, data.weight, data.base_experience, ability);
 }
 
-function StatsContent(data) {
+function displayStatsContent(data) {
   const stats = data.stats.map((item) => item.stat.name);
   const dialogBoxMainContent = document.querySelector(".box_content");
   dialogBoxMainContent.innerHTML = HTMLStatsContent(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5]);
@@ -100,24 +113,23 @@ function StatsContent(data) {
   }
 }
 
-async function evoChain(id) {
-  const fetchSpeciesData = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${id}`);
-  const species = await fetchSpeciesData.json();
-
-  const fetchEvoChainData = await fetch(species.evolution_chain.url);
-  const evoChain = await fetchEvoChainData.json();
-
-  console.log(evoChain.chain.evolves_to[0].species);
-  const dani = evoChain.chain.evolves_to[0].species.url;
-
-  const pokemonToEvolves = await fetch(dani);
-  const ajla = await pokemonToEvolves.json();
-  // console.log(dani);
-  // console.log(ajla);
-  console.log(pokemonImage);
+async function displayEvolutionChain(id) {
+  const result = pokemonList.find((obj) => obj.id == id);
+  const first = result.evo.chain.species.name;
+  const secound = result.evo.chain.evolves_to[0].species.name;
+  const third = result.evo.chain.evolves_to[0].evolves_to[0].species.name;
+  const imageUrls = [`https://pokeapi.co/api/v2/pokemon/${first}`, `https://pokeapi.co/api/v2/pokemon/${secound}`, `https://pokeapi.co/api/v2/pokemon/${third}`];
+  try {
+    const response = await Promise.all(imageUrls.map((url) => fetch(url)));
+    const pokemonImages = await Promise.all(response.map((respon) => respon.json()));
+    const dialogBoxMainContent = document.querySelector(".box_content");
+    dialogBoxMainContent.innerHTML = HTMLEvoChain(pokemonImages[0].sprites.other.home.front_default, pokemonImages[1].sprites.other.home.front_default, pokemonImages[2].sprites.other.home.front_default);
+  } catch (error) {
+    console.error("Error fetching data:" + error);
+  }
 }
 
-function colorForTheBox(id) {
+function applyForTheBox(id) {
   let color = document.getElementById(id).style.backgroundImage;
   document.querySelector(".box_image").style.backgroundImage = color;
 }
