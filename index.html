@@ -6,23 +6,39 @@
     <script src="./scripts/script.js" defer></script>
     <script src="./scripts/HTMLTamplates.js" defer></script>
     <script src="./scripts/randomGradientFunction.js" defer></script>
+    <script src="./scripts/loader.js" defer></script>
+    <script src="./scripts/search.js" defer></script>
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="stylesheet" href="./css/dialog_box.css" />
+    <link rel="stylesheet" href="./css/loader.css" />
     <link rel="icon" href="./assets/icons/pokeball.png" type="image/x-icon" />
     <title>Pokemon</title>
   </head>
   <body onload="init()">
     <header>
-      <img src="./assets/icons/pokeball.png" alt="" />
-      <h1>Pokedex</h1>
+      <div class="pokemon_logo">
+        <img src="./assets/icons/pokeball.png" alt="" />
+        <h1>Pokedex</h1>
+      </div>
+      <search>
+        <form action="">
+          <input list="browsers" type="search" id="search" placeholder="Search Pokemon" />
+          <datalist id="browsers"></datalist>
+        </form>
+      </search>
     </header>
 
     <main>
       <div class="main_content"></div>
+      <button class="load_button">More Pokemons</button>
       <div id="overlay" onclick="overlayOff()">
         <div class="dialog_box" onclick="stopEventBubbel(event)"></div>
       </div>
-      <button>load More</button>
+
+      <div class="loader_overlay"></div>
+      <div class="loader">
+        <img class="loader_image" id="rotateImage" src="./assets/img/transparent-black-border-flat-black-and-white-pokmon-character-with-red65c846120b6ad4.4175625417076239540468.png" alt="" />
+      </div>
     </main>
 
     <footer></footer>

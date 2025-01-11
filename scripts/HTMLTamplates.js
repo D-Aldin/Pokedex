@@ -90,13 +90,19 @@ function HTMLStatsContent(hp, attack, defense, specialAttack, specialDefense, sp
   `;
 }
 
-function HTMLEvoChain(first, secound, three) {
+function HTMLEvoChain() {
   return `
         <div class="evolution_content">
-          <img class="evolution_image" src="${first}" alt="" />
+          <img class="evolution_image" src="" alt="" />
           <img class="arrow" src="./assets/icons/fast-forward.png" alt="" />
-          <img class="evolution_image" src="${secound}" alt="" />
+          <img class="evolution_image" src="" alt="" />
           <img class="arrow" src="./assets/icons/fast-forward.png" alt="" />
-          <img class="evolution_image" src="${three}" alt="" />
+          <img class="evolution_image" src="" alt="" />
         </div>`;
+}
+
+function HTMLEvolutionChain(img) {
+  return `
+        <img class="evolution_image" src="${img}" alt="" />
+        <img class="arrow" src="./assets/icons/fast-forward.png" alt="" />`;
 }

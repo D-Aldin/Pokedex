@@ -1,13 +1,32 @@
 "use strict";
-
-const BASE_URL = "https://pokeapi.co/api/v2/pokemon?limit=10";
+let offset = 0;
+let limit = 10;
+const BASE_URL = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
 const mainPokemonContent = document.querySelector(".main_content");
 const imageContainer = document.querySelector(".image_container");
 const dialogBox = document.querySelector(".dialog_box");
 let pokemonList = [];
 
-function init() {
-  pokemonData();
+async function init() {
+  await pokemonData();
+}
+
+async function loadMorePokemons() {
+  offset += limit;
+  const updatedURL = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${limit}`;
+  try {
+    const pokemonData = await fetchBaseUrl(updatedURL);
+    pokemonData.forEach(async (pokemon) => {
+      const response = await fetch(pokemon.url);
+      if (response.ok) {
+        const pokemonDetails = await response.json();
+        pokemonDetailsData(pokemonDetails);
+        pokemonSpeciesData(pokemonDetails.species.url);
+      }
+    });
+  } catch (error) {
+    console.error("Error loading", error);
+  }
 }
 
 function overlayOn() {
@@ -22,8 +41,8 @@ function stopEventBubbel(event) {
   event.stopPropagation();
 }
 
-async function fetchBaseUrl() {
-  const response = await fetch(BASE_URL);
+async function fetchBaseUrl(url) {
+  const response = await fetch(url);
   try {
     if (!response.ok) {
       throw new console.error(`Error! Status: ${response.status}`);
@@ -37,7 +56,7 @@ async function fetchBaseUrl() {
 }
 
 async function pokemonData() {
-  const pokemonData = await fetchBaseUrl();
+  const pokemonData = await fetchBaseUrl(BASE_URL);
   for (let index = 0; index < pokemonData.length; index++) {
     const pokemon = pokemonData[index];
     try {
@@ -69,8 +88,6 @@ async function pokemonDetailsData(dataOnDetails) {
   const name = dataOnDetails.name;
   const image = dataOnDetails.sprites.other.home.front_default;
   const abilities = dataOnDetails.types.map((element) => element.type.name);
-  console.log(abilities);
-
   mainPokemonContent.innerHTML += writeHTML(id, name, image, abilities.join(" "));
   const pokemonObject = {
     id: dataOnDetails.id,
@@ -81,14 +98,18 @@ async function pokemonDetailsData(dataOnDetails) {
 }
 
 async function pokemonDialogBox(event) {
+  console.log(event);
+
   const pokemonID = event.target.closest(".pokemon_box").id;
+  console.log(pokemonID);
+
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonID}`);
   const pokemonDetailsData = await response.json();
   const id = pokemonDetailsData.id;
   const name = pokemonDetailsData.name;
   const image = pokemonDetailsData.sprites.other.home.front_default;
   dialogBox.innerHTML = writeHTMLForTheBox(id, name, image);
-  applyForTheBox(pokemonID);
+  applyColorForTheBox(pokemonID);
   displayAttributeOverview(pokemonDetailsData);
   document.getElementById("stats").addEventListener("click", displayStatsContent.bind(null, pokemonDetailsData));
   document.getElementById("main").addEventListener("click", displayAttributeOverview.bind(null, pokemonDetailsData));
@@ -97,8 +118,6 @@ async function pokemonDialogBox(event) {
 
 function displayAttributeOverview(data) {
   const ability = data.abilities.map((item) => item.ability.name);
-  console.log(data);
-
   const dialogBoxMainContent = document.querySelector(".box_content");
   dialogBoxMainContent.innerHTML = attributeOverviewHTML(data.height, data.weight, data.base_experience, ability);
 }
@@ -114,22 +133,42 @@ function displayStatsContent(data) {
 }
 
 async function displayEvolutionChain(id) {
-  const result = pokemonList.find((obj) => obj.id == id);
-  const first = result.evo.chain.species.name;
-  const secound = result.evo.chain.evolves_to[0].species.name;
-  const third = result.evo.chain.evolves_to[0].evolves_to[0].species.name;
-  const imageUrls = [`https://pokeapi.co/api/v2/pokemon/${first}`, `https://pokeapi.co/api/v2/pokemon/${secound}`, `https://pokeapi.co/api/v2/pokemon/${third}`];
+  const pokemonNamesArr = [];
+  let dialogBoxMainContent = document.querySelector(".box_content");
+  const createdPokemonObj = pokemonList.find((obj) => obj.id == id);
+  pokemonNamesArr.push(createdPokemonObj.evo.chain.species.name, createdPokemonObj.evo.chain.evolves_to[0].species.name);
+  if (createdPokemonObj.evo.chain.evolves_to[0].evolves_to[0] !== undefined) {
+    pokemonNamesArr.push(createdPokemonObj.evo.chain.evolves_to[0].evolves_to[0].species.name);
+  }
+  const imageUrls = pokemonNamesArr.map((name) => `https://pokeapi.co/api/v2/pokemon/${name}`);
   try {
     const response = await Promise.all(imageUrls.map((url) => fetch(url)));
-    const pokemonImages = await Promise.all(response.map((respon) => respon.json()));
-    const dialogBoxMainContent = document.querySelector(".box_content");
-    dialogBoxMainContent.innerHTML = HTMLEvoChain(pokemonImages[0].sprites.other.home.front_default, pokemonImages[1].sprites.other.home.front_default, pokemonImages[2].sprites.other.home.front_default);
+    let pokemonImages = await Promise.all(response.map((respon) => respon.json()));
+    dialogBoxMainContent.innerHTML = "<div class='evolution_content'></dic>";
+    for (let index = 0; index < pokemonImages.length; index++) {
+      document.querySelector(".evolution_content").innerHTML += HTMLEvolutionChain(pokemonImages[index].sprites.other.home.front_default);
+    }
   } catch (error) {
     console.error("Error fetching data:" + error);
   }
+  removeExcessArrows();
 }
 
-function applyForTheBox(id) {
+function applyColorForTheBox(id) {
   let color = document.getElementById(id).style.backgroundImage;
   document.querySelector(".box_image").style.backgroundImage = color;
 }
+
+function removeExcessArrows() {
+  const refContent = document.querySelector(".evolution_content");
+  refContent.lastChild.remove();
+}
+
+const btn = document.querySelector(".load_button");
+btn.addEventListener("click", loadMorePokemons);
+
+function findPokemon(arr) {
+  console.log(arr.name);
+}
+
+findPokemon(pokemonList);
