@@ -97,12 +97,8 @@ async function pokemonDetailsData(dataOnDetails) {
   pokemonList.push(pokemonObject);
 }
 
-async function pokemonDialogBox(event) {
-  console.log(event);
-
-  const pokemonID = event.target.closest(".pokemon_box").id;
-  console.log(pokemonID);
-
+async function pokemonDialogBox(event, fromSearchBar) {
+  const pokemonID = fromSearchBar || event.target.closest(".pokemon_box").id;
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonID}`);
   const pokemonDetailsData = await response.json();
   const id = pokemonDetailsData.id;
@@ -114,6 +110,13 @@ async function pokemonDialogBox(event) {
   document.getElementById("stats").addEventListener("click", displayStatsContent.bind(null, pokemonDetailsData));
   document.getElementById("main").addEventListener("click", displayAttributeOverview.bind(null, pokemonDetailsData));
   document.getElementById("evo").addEventListener("click", displayEvolutionChain.bind(null, pokemonID));
+  const nextBtn = document.querySelector(".next");
+  const backBtn = document.querySelector(".back");
+
+  nextBtn.addEventListener("click", next);
+  backBtn.addEventListener("click", back);
+
+  // next();
 }
 
 function displayAttributeOverview(data) {
@@ -164,11 +167,32 @@ function removeExcessArrows() {
   refContent.lastChild.remove();
 }
 
-const btn = document.querySelector(".load_button");
-btn.addEventListener("click", loadMorePokemons);
-
-function findPokemon(arr) {
-  console.log(arr.name);
+function next() {
+  const counter = pokemonList.length;
+  const refCurrentlyID = document.querySelector(".box_id");
+  let convertToNumber = Number(refCurrentlyID.innerHTML);
+  let goNext = convertToNumber + 1;
+  if (counter >= goNext) {
+  } else {
+    goNext = 1;
+  }
+  pokemonDialogBox(event, goNext);
 }
 
-findPokemon(pokemonList);
+function back() {
+  const counter = pokemonList.length;
+  const refCurrentlyID = document.querySelector(".box_id");
+  let convertToNumber = Number(refCurrentlyID.innerHTML);
+  let goBack = convertToNumber - 1;
+  console.log(goBack);
+  console.log(counter);
+
+  if (goBack == 0) {
+    goBack = counter;
+  }
+
+  pokemonDialogBox(event, goBack);
+}
+
+const btn = document.querySelector(".load_button");
+btn.addEventListener("click", loadMorePokemons);

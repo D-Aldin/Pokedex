@@ -5,7 +5,6 @@ function search() {
   let duplicateList = [];
   input.addEventListener("input", () => {
     let searchForPokemon = input.value;
-    document.getElementsByClassName("pokemon_name").innerHTML;
     for (const name of pokemonList) {
       const pokemonName = name.name;
       let firstLetters = pokemonName.slice(0, 3);
@@ -19,7 +18,11 @@ function search() {
         }
       }
     }
-    // console.log(input.value);
+    try {
+      const refPokemonID = Number(document.getElementById(input.value).parentElement?.parentElement?.parentElement.id);
+      pokemonDialogBox(event, refPokemonID);
+      overlayOn();
+    } catch {}
   });
 }
 

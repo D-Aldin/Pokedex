@@ -34,6 +34,14 @@ function writeHTMLForTheBox(id, name, img) {
               <button class="btn" id="stats">stats</button>
               <button class="btn" id="evo">evo chain</button>
             </div>
+            <div>
+              <div>
+                <img class="back" id="backBtn" src="./assets/icons/back.png" alt="next" />
+              </div>
+              <div>
+                <img class="next" id="nextBtn" src="./assets/icons/next.png" alt="back" />
+              </div>
+            </div>
             `;
 }
 
@@ -56,7 +64,8 @@ function attributeOverviewHTML(height, wight, experience, ability) {
               <th>Abilities:</th>
               <td>${ability}</td>
            </tr>
-          </table>`;
+          </table>
+          `;
 }
 
 function HTMLStatsContent(hp, attack, defense, specialAttack, specialDefense, speed) {

@@ -164,3 +164,36 @@ progress {
   justify-content: center;
   align-items: center;
 }
+
+.load_button:hover {
+  transform: scale(1.1);
+}
+
+.next {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2rem;
+  height: 2rem;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.back {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2rem;
+  height: 2rem;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.back:hover,
+.next:hover {
+  transform: scale(1.1);
+}
