@@ -196,3 +196,5 @@ function back() {
 
 const btn = document.querySelector(".load_button");
 btn.addEventListener("click", loadMorePokemons);
+
+// TODO make site response
