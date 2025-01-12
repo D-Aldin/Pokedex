@@ -29,3 +29,21 @@ function search() {
 document.addEventListener("DOMContentLoaded", () => {
   search();
 });
+
+function showMagnifier() {
+  const refHeaderClass = document.querySelector("header");
+  const refPokemonLogo = document.querySelector(".pokemon_logo");
+  const refFormTag = document.querySelector("#form");
+  const refSearchBar = document.querySelector("#search");
+  refPokemonLogo.classList.toggle("display_none");
+  refFormTag.classList.toggle("form_class");
+  if (refPokemonLogo.classList.contains("display_none")) {
+    refSearchBar.style.display = "flex";
+    refHeaderClass.style.justifyContent = "end";
+  } else {
+    refSearchBar.style.display = "none";
+    refHeaderClass.style.justifyContent = "space-between";
+  }
+}
+
+document.querySelector(".magnifier").addEventListener("click", showMagnifier);

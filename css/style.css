@@ -52,6 +52,11 @@ input {
   text-align: center;
 }
 
+.magnifier {
+  display: none;
+  cursor: pointer;
+}
+
 main {
   flex: 1;
   overflow: auto;
@@ -191,7 +196,7 @@ footer {
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  box-shadow: 2px 2px 9px #7b7a7a;
+  box-shadow: 2px 5px 15px #7b7a7a;
 }
 
 .footer_logo {
@@ -214,4 +219,123 @@ footer {
 .socila_media img {
   width: 3rem;
   height: 3rem;
+}
+
+.display_none {
+  display: none;
+}
+
+.form_class {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 30px;
+}
+
+/* @media only screen and (min-width: 320px) and (max-width: 575) {
+  .main_content {
+    grid-template-columns: repeat(1, 200px);
+    gap: 40px;
+  }
+} */
+
+@media only screen and (min-width: 280px) and (max-width: 575px) {
+  h1 {
+    font-size: 25px;
+  }
+
+  header img {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  input {
+    display: none;
+  }
+
+  .magnifier {
+    display: inline;
+  }
+
+  .main_content {
+    grid-template-columns: repeat(1, 200px);
+    gap: 40px;
+  }
+
+  .footer_content {
+    justify-content: center;
+  }
+
+  .socila_media img {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .footer_logo {
+    display: none;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+    height: 12px; /* Height for horizontal scrollbar */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #a4a5a4; /* Color of the thumb */
+    border-radius: 10px; /* Rounded corners */
+    border: 2px solid #494949; /* Optional border around the thumb */
+  }
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+  .main_content {
+    grid-template-columns: repeat(2, 200px);
+    gap: 40px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+    height: 12px; /* Height for horizontal scrollbar */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #a4a5a4; /* Color of the thumb */
+    border-radius: 10px; /* Rounded corners */
+    border: 2px solid #494949; /* Optional border around the thumb */
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .main_content {
+    grid-template-columns: repeat(3, 200px);
+    gap: 40px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+    height: 12px; /* Height for horizontal scrollbar */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #a4a5a4; /* Color of the thumb */
+    border-radius: 10px; /* Rounded corners */
+    border: 2px solid #494949; /* Optional border around the thumb */
+  }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+  .main_content {
+    grid-template-columns: repeat(4, 200px);
+    gap: 40px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 12px; /* Width of the scrollbar */
+    height: 12px; /* Height for horizontal scrollbar */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #a4a5a4; /* Color of the thumb */
+    border-radius: 10px; /* Rounded corners */
+    border: 2px solid #494949; /* Optional border around the thumb */
+  }
 }
