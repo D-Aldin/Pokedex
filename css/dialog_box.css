@@ -62,21 +62,6 @@
   border-radius: 10px 10px 0 0;
 }
 
-.btn {
-  cursor: pointer;
-  border: none;
-  color: white;
-  background-color: rgba(172, 172, 172, 0.37);
-  border: rgb(201, 201, 201) transparent;
-  padding: 12px;
-  border-radius: 30px;
-  filter: drop-shadow(6px 4px 4px rgb(128, 123, 123));
-}
-
-.btn:hover {
-  transform: scale(1.1);
-}
-
 .box_menu_text {
   padding: 5px;
   cursor: pointer;
