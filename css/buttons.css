@@ -55,9 +55,10 @@
   color: white;
   background-color: rgba(172, 172, 172, 0.37);
   border: rgb(201, 201, 201) transparent;
-  padding: 12px;
   border-radius: 30px;
   filter: drop-shadow(6px 4px 4px rgb(128, 123, 123));
+  width: 92px;
+  height: 35px;
 }
 
 .btn:hover {

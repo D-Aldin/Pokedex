@@ -26,10 +26,6 @@ function search() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  search();
-});
-
 function showMagnifier() {
   const refHeaderClass = document.querySelector("header");
   const refPokemonLogo = document.querySelector(".pokemon_logo");
@@ -46,4 +42,7 @@ function showMagnifier() {
   }
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+  search();
+});
 document.querySelector(".magnifier").addEventListener("click", showMagnifier);

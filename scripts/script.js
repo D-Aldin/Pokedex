@@ -5,6 +5,7 @@ const BASE_URL = `https://pokeapi.co/api/v2/pokemon?offset=${offset}&limit=${lim
 const mainPokemonContent = document.querySelector(".main_content");
 const imageContainer = document.querySelector(".image_container");
 const dialogBox = document.querySelector(".dialog_box");
+const btn = document.querySelector(".load_button");
 let pokemonList = [];
 
 async function init() {
@@ -101,10 +102,7 @@ async function pokemonDialogBox(event, fromSearchBar) {
   const pokemonID = fromSearchBar || event.target.closest(".pokemon_box").id;
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonID}`);
   const pokemonDetailsData = await response.json();
-  const id = pokemonDetailsData.id;
-  const name = pokemonDetailsData.name;
-  const image = pokemonDetailsData.sprites.other.home.front_default;
-  dialogBox.innerHTML = writeHTMLForTheBox(id, name, image);
+  dialogBox.innerHTML = writeHTMLForTheBox(pokemonDetailsData.id, pokemonDetailsData.name, pokemonDetailsData.sprites.other.home.front_default);
   applyColorForTheBox(pokemonID);
   displayAttributeOverview(pokemonDetailsData);
   document.getElementById("stats").addEventListener("click", displayStatsContent.bind(null, pokemonDetailsData));
@@ -112,11 +110,8 @@ async function pokemonDialogBox(event, fromSearchBar) {
   document.getElementById("evo").addEventListener("click", displayEvolutionChain.bind(null, pokemonID));
   const nextBtn = document.querySelector(".next");
   const backBtn = document.querySelector(".back");
-
   nextBtn.addEventListener("click", next);
   backBtn.addEventListener("click", back);
-
-  // next();
 }
 
 function displayAttributeOverview(data) {
@@ -148,9 +143,9 @@ async function displayEvolutionChain(id) {
     const response = await Promise.all(imageUrls.map((url) => fetch(url)));
     let pokemonImages = await Promise.all(response.map((respon) => respon.json()));
     dialogBoxMainContent.innerHTML = "<div class='evolution_content'></dic>";
-    for (let index = 0; index < pokemonImages.length; index++) {
-      document.querySelector(".evolution_content").innerHTML += HTMLEvolutionChain(pokemonImages[index].sprites.other.home.front_default);
-    }
+    pokemonImages.forEach((pokemon) => {
+      document.querySelector(".evolution_content").innerHTML += HTMLEvolutionChain(pokemon.sprites.other.home.front_default);
+    });
   } catch (error) {
     console.error("Error fetching data:" + error);
   }
@@ -184,17 +179,10 @@ function back() {
   const refCurrentlyID = document.querySelector(".box_id");
   let convertToNumber = Number(refCurrentlyID.innerHTML);
   let goBack = convertToNumber - 1;
-  console.log(goBack);
-  console.log(counter);
-
   if (goBack == 0) {
     goBack = counter;
   }
-
   pokemonDialogBox(event, goBack);
 }
 
-const btn = document.querySelector(".load_button");
 btn.addEventListener("click", loadMorePokemons);
-
-// TODO make site response

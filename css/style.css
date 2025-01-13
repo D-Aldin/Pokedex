@@ -231,12 +231,16 @@ footer {
   gap: 30px;
 }
 
-/* @media only screen and (min-width: 320px) and (max-width: 575) {
-  .main_content {
-    grid-template-columns: repeat(1, 200px);
-    gap: 40px;
-  }
-} */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+  height: 12px; /* Height for horizontal scrollbar */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #a4a5a4; /* Color of the thumb */
+  border-radius: 10px; /* Rounded corners */
+  border: 2px solid #494949; /* Optional border around the thumb */
+}
 
 @media only screen and (min-width: 280px) and (max-width: 575px) {
   h1 {
@@ -273,34 +277,12 @@ footer {
   .footer_logo {
     display: none;
   }
-
-  ::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
-    height: 12px; /* Height for horizontal scrollbar */
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #a4a5a4; /* Color of the thumb */
-    border-radius: 10px; /* Rounded corners */
-    border: 2px solid #494949; /* Optional border around the thumb */
-  }
 }
 
 @media only screen and (min-width: 576px) and (max-width: 767px) {
   .main_content {
     grid-template-columns: repeat(2, 200px);
     gap: 40px;
-  }
-
-  ::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
-    height: 12px; /* Height for horizontal scrollbar */
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #a4a5a4; /* Color of the thumb */
-    border-radius: 10px; /* Rounded corners */
-    border: 2px solid #494949; /* Optional border around the thumb */
   }
 }
 
@@ -309,33 +291,11 @@ footer {
     grid-template-columns: repeat(3, 200px);
     gap: 40px;
   }
-
-  ::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
-    height: 12px; /* Height for horizontal scrollbar */
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #a4a5a4; /* Color of the thumb */
-    border-radius: 10px; /* Rounded corners */
-    border: 2px solid #494949; /* Optional border around the thumb */
-  }
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .main_content {
     grid-template-columns: repeat(4, 200px);
     gap: 40px;
-  }
-
-  ::-webkit-scrollbar {
-    width: 12px; /* Width of the scrollbar */
-    height: 12px; /* Height for horizontal scrollbar */
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: #a4a5a4; /* Color of the thumb */
-    border-radius: 10px; /* Rounded corners */
-    border: 2px solid #494949; /* Optional border around the thumb */
   }
 }
