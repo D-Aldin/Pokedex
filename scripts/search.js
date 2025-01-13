@@ -11,19 +11,27 @@ function search() {
       if (firstLetters === searchForPokemon) {
         const newValue = document.createElement("option");
         newValue.value = pokemonName;
-        let checkForDuplicates = duplicateList.includes(newValue.value);
-        if (checkForDuplicates === false) {
-          refDataList.appendChild(newValue);
-          duplicateList.push(pokemonName);
-        }
+        checkListForDuplicate(duplicateList, newValue);
       }
     }
-    try {
-      const refPokemonID = Number(document.getElementById(input.value).parentElement?.parentElement?.parentElement.id);
-      pokemonDialogBox(event, refPokemonID);
-      overlayOn();
-    } catch {}
+    handleErrors();
   });
+}
+
+function checkListForDuplicate(arr, value, name) {
+  let checkForDuplicates = arr.includes(value);
+  if (checkForDuplicates === false) {
+    refDataList.appendChild(value);
+    arr.push(name);
+  }
+}
+
+function handleErrors() {
+  try {
+    const refPokemonID = Number(document.getElementById(input.value).parentElement?.parentElement?.parentElement.id);
+    pokemonDialogBox(event, refPokemonID);
+    overlayOn();
+  } catch {}
 }
 
 function showMagnifier() {
