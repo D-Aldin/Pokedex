@@ -37,9 +37,14 @@ header img {
 }
 
 .pokemon_logo {
-  align-items: center;
+}
+
+.pokemon_logo a {
   display: flex;
-  gap: 20px;
+  align-items: center;
+  gap: 30px;
+  text-decoration: none;
+  color: black;
 }
 
 input {
